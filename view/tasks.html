@@ -5,7 +5,7 @@
 		<script src="./web3.min.js"></script>
 	</head>
 	<body>
-		<div>
+		<!--<div>
 			<input id="input"  type="text" >
 			<button id="button">Set</button>
 		</div>
@@ -13,12 +13,12 @@
 			<button id="buttonGet">Get</button>
 			<pre id="output"/>
 		</div>
-			
+			-->
 		
 
 		<script type="text/javascript">
 			
-			var web3 = new Web3(new Web3.providers.HttpProvider("http://10.15.42.168:8545"));
+			var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 			web3.eth.defaultAccount = web3.eth.accounts[0];
 			//abi - application binary interface (похоже на JSON)
 			var Tasks = web3.eth.contract([
@@ -95,7 +95,7 @@
 		      "stateMutability": "view",
 		      "type": "function"
 		    }
-		  ]).at('0xb3d1bab84dfc0546130ef374b99f185cd928c4f8'); // публикует контракт от имени адреса
+		  ]).at('0xb2a17f87ea9eb100f803361d24145683fd159f5d'); // публикует контракт от имени адреса
 			
 
 			var input = document.getElementById("input");
@@ -123,8 +123,72 @@
 				    console.log("s=%d", stroka);
 				});*/
 			});
-			
+		
 		</script>
+<!--***********************СПИСОК ТАСКОВ HTML ******************************-->
+			<table id="mainTable">
+				<tr>
+					<td>
+						
+					</td>
+				</tr>
 
+
+
+			</table>
+
+
+<!--***********************СПИСОК ТАСКОВ СКРИПТ *************************-->
+		<script>
+				var mainTable = document.getElementById("mainTable");
+				var row = mainTable.insertRow(0);
+				var cell = row.insertCell(0);
+				cell.innerHTML = 'Contract ID';
+				var cell = row.insertCell(1);
+				cell.innerHTML = 'Condition';	
+				var cell = row.insertCell(2);
+				cell.innerHTML = 'Votes FOR';	
+				var cell = row.insertCell(3);
+				cell.innerHTML = 'Description';				
+				var cell = row.insertCell(4);
+				cell.innerHTML = 'Your voice';
+
+				Tasks.taskQuantity.call(function(err, res) {
+					for (i = 0; i < res; i++) { 
+						(function() {
+							var j=i;
+							var row = mainTable.insertRow(j+1);
+							var cell = row.insertCell(0);
+							cell.innerHTML = i;
+
+
+						    Tasks.taskInformation.call(j, function(err, res1) {
+						    	console.log("Result: ", j, 'output: ', res1);
+						    	for (k = 0; k < res1.length; k++) { 
+						    	var cell = row.insertCell(k+1);
+							    	cell.innerHTML = res1[k];
+							    };
+							var cell = row.insertCell(k+1);
+							cell.innerHTML = "<button id='i' class='vote' onclick='sendVoteToContract()'>✔</button>";
+							});
+						})();
+					}
+				});
+				function sendVoteToContract(){
+					alert(1);
+				}
+			</script>
 	</body>
+
+<style type="text/css">
+	.vote{
+		width: 40px; 
+		height: 40px;
+		background-color: RGB(160, 247, 139);
+		border-radius: 20px;
+	}
+	#mainTable{
+		text-align:  center;
+	}
+</style>
 </html>
