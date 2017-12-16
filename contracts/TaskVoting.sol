@@ -1,46 +1,48 @@
 pragma solidity ^0.4.18;
-/*
-contract TaskContract{
-    string wordDescription;
-    
-    function appointProperties(string _wordDescription) public {
-        wordDescription = _wordDescription;
-    }
-    
-}*/
-
-
-
 
 contract TaskVoting {
 /********************ПЕРЕМЕННЫЕ********************/
     uint public taskQuantity = 0;
     mapping(uint => Task) arrayOfTasks;
     mapping(address =>  mapping(uint => bool)) arrayOfVotingStates;
-    
-    struct Task {
-        uint32 condition;/*0 - предложена, 1 - одобрена, 2 - в процессе голосования, 3 - в работе, 4 - готова*/
+    struct Task{
+        uint32 condition;/*0 - предложена, 1 - одобрена, 2 - в работе, 3 - готова*/
+        uint positiveVotesNumber;
         string Description;
     }
-
-    address[] memberAddresses = [0xfd0f031604caf1165b43d9aff21d56e0925b95ad, 0x913bb748596b185c5aafc456a972fd2579475536];
+    address[] memberAddresses = [
+         0x108d3d2ac5926977c69da2e6342bdc99de38e3f1, 0x38f491cb707daf3d9bfdcc60f18ad139fe87eabb
+        ];
     
 /********************ФУНКЦИИ************************/
     
-    function createTask(string _description) public {
-      arrayOfTasks[taskQuantity] = Task({
-              condition: 0,
-              Description: _description
-          });
-      taskQuantity++;
+    function createTask(string _description) public{
+    arrayOfTasks[taskQuantity] = Task({
+            condition: 0,
+            positiveVotesNumber: 0,
+            Description: _description
+        });
+    
+    taskQuantity++;
     }
     
-    function taskInformation(uint _taskNumber) public view returns(uint, string) {
-        return(arrayOfTasks[_taskNumber].condition, arrayOfTasks[_taskNumber].Description);
+    function taskInformation(uint _taskNumber) public view returns(uint, uint, string){
+        return(arrayOfTasks[_taskNumber].condition, arrayOfTasks[_taskNumber].positiveVotesNumber, arrayOfTasks[_taskNumber].Description);
     }
     
     function Vote(uint _taskNumber,bool _decision) public {
-        arrayOfVotingStates[msg.sender][_taskNumber] = _decision;
+        
+        if (_decision == true && arrayOfVotingStates[msg.sender][_taskNumber] == false){
+        arrayOfTasks[_taskNumber].positiveVotesNumber ++;
+        }
+        arrayOfVotingStates[msg.sender][_taskNumber] = true;
+        
+        if (arrayOfTasks[_taskNumber].positiveVotesNumber>memberAddresses.length/2){
+            arrayOfTasks[_taskNumber].condition = 1 ;
+        }
     }
     
+
+    
 }
+
