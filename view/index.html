@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Document1</title>
-		<script src="C:\Users\Ilia\node_modules\web3\dist\web3.min.js"></script>
+		<!-- <script src="./web3.min.js"></script> -->
 	</head>
 	<body>
 		<input id="input"  type="text" >
@@ -13,41 +13,55 @@
 
 		<script type="text/javascript">
 			
-			var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+			// var web3 = new Web3(new Web3.providers.HttpProvider("http://10.15.42.168:8545"));
 			console.log(web3);
 			web3.eth.defaultAccount = web3.eth.accounts[0];
 			//abi - application binary interface (похоже на JSON)
 			var contract1ABI = web3.eth.contract([
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "getFoo",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_foo",
-				"type": "bytes32"
-			}
-		],
-		"name": "setFoo",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	}
-])
-			var foo = contract1ABI.at('0x6643f5710e6163b12a89ad8c2bd7d3741e869dd8'); // публикует контракт от имени адреса
+		    {
+		      "constant": false,
+		      "inputs": [],
+		      "name": "getFoo",
+		      "outputs": [
+		        {
+		          "name": "",
+		          "type": "string"
+		        }
+		      ],
+		      "payable": false,
+		      "stateMutability": "nonpayable",
+		      "type": "function"
+		    },
+		    {
+		      "constant": true,
+		      "inputs": [],
+		      "name": "foo",
+		      "outputs": [
+		        {
+		          "name": "",
+		          "type": "string"
+		        }
+		      ],
+		      "payable": false,
+		      "stateMutability": "view",
+		      "type": "function"
+		    },
+		    {
+		      "constant": false,
+		      "inputs": [
+		        {
+		          "name": "_foo",
+		          "type": "string"
+		        }
+		      ],
+		      "name": "setFoo",
+		      "outputs": [],
+		      "payable": false,
+		      "stateMutability": "nonpayable",
+		      "type": "function"
+		    }
+		  ])
+			var foo = contract1ABI.at('0x312dd89f17647de792f7290222070d83d5467376'); // публикует контракт от имени адреса
 			
 
 			var input = document.getElementById("input");
@@ -55,7 +69,9 @@
 			var output = document.getElementById('output');
 			button.addEventListener('click', function(){
 				foo.setFoo(input.value);
-				output.innerHTML = foo.getFoo();
+				foo.getFoo.call(function(err, res) {
+					output.innerHTML = res
+				});
 				/*foo.getStroka.call().then(function(stroka){
 				    console.log("s=%d", stroka);
 				});*/

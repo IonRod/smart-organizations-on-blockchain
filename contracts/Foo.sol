@@ -1,13 +1,13 @@
 pragma solidity ^0.4.18;
 
 contract Foo{
-   bytes32 foo;
+   string public foo;
    
-   function setFoo(bytes32 _foo) public{
+   function setFoo(string _foo) public{
        foo = _foo;
    }
     
-    function getFoo() public returns  (bytes32){
-        return (foo);
+    function getFoo() public returns  (string){
+        return foo;
     }
 }
