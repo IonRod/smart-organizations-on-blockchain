@@ -2,18 +2,19 @@
 <html>
 	<head>
 		<title>Document1</title>
-		<script src="./web3.min.js"></script>
+		<!-- <script src="./web3.min.js"></script> -->
 	</head>
 	<body>
 		<input id="input"  type="text" >
 		<button id="button">Set</button>
+		<button id="buttonGet">Get</button>
 		<pre id="output">
 			
 		</pre>
 
 		<script type="text/javascript">
 			
-			var web3 = new Web3(new Web3.providers.HttpProvider("http://10.15.42.168:8545"));
+			// var web3 = new Web3(new Web3.providers.HttpProvider("http://10.15.42.168:8545"));
 			console.log(web3);
 			web3.eth.defaultAccount = web3.eth.accounts[0];
 			//abi - application binary interface (похоже на JSON)
@@ -66,9 +67,13 @@
 
 			var input = document.getElementById("input");
 			var button = document.getElementById('button');
+			var buttonGet = document.getElementById('buttonGet');
 			var output = document.getElementById('output');
+			
 			button.addEventListener('click', function(){
-				foo.setFoo(input.value);
+				foo.setFoo(input.value, function(err, res) {
+					
+				});
 				foo.getFoo.call(function(err, res) {
 					output.innerHTML = res
 				});
@@ -76,6 +81,17 @@
 				    console.log("s=%d", stroka);
 				});*/
 			});
+			
+			
+			buttonGet.addEventListener('click', function(){
+				foo.getFoo.call(function(err, res) {
+					output.innerHTML = res
+				});
+				/*foo.getStroka.call().then(function(stroka){
+				    console.log("s=%d", stroka);
+				});*/
+			});
+			
 		</script>
 
 	</body>

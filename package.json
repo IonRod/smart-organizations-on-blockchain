@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/IonRod/smart-organizations-on-blockchain/issues"
   },
-  "homepage": "https://github.com/IonRod/smart-organizations-on-blockchain#readme"
+  "homepage": "https://github.com/IonRod/smart-organizations-on-blockchain#readme",
+  "dependencies": {
+    "serve-static": "^1.13.1"
+  }
 }
